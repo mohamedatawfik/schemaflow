@@ -3,7 +3,7 @@
 set -e
 
 echo "Cloning the Adamant repository..."
-git clone https://github.com/mohamedatawfik/adamant.git
+git clone https://github.com/Toxnix/Adamant_full.git
 cd adamant
 
 echo "Installing Nextcloud Scripts Dependencies..."
