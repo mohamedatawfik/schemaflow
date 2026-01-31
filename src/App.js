@@ -4,7 +4,6 @@ import { Route, Switch, Redirect} from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess, logoutSuccess } from './redux/actions/authActions';
 import AdamantMain from "./pages/AdamantMain";
-import "cors";
 import packageJson from "../package.json";
 import { ToastContainer } from "react-toastify";
 import Login from "../src/components/Login";
