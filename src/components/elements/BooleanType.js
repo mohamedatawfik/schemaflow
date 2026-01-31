@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Checkbox, FormLabel, FormHelperText, FormControl } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from "@material-ui/icons/Delete";
-import { IconButton } from '@material-ui/core';
+import { Checkbox, FormLabel, FormHelperText, FormControl } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from '@mui/material';
 import EditElement from '../EditElement';
 import { FormContext } from '../../FormContext';
 import deleteKey from '../utils/deleteKey';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import getValue from '../utils/getValue';
 import set from 'set-value';
 

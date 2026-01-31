@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react'
-import TextField from "@material-ui/core/TextField"
-import { makeStyles } from '@material-ui/core/styles';
-import DeleteIcon from "@material-ui/icons/Delete";
-import { IconButton } from '@material-ui/core';
-import { Typography } from '@material-ui/core';
+import TextField from "@mui/material/TextField"
+import { makeStyles } from '@mui/styles';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from '@mui/material';
+import { Typography } from '@mui/material';
 import { FormContext } from '../../../FormContext';
 import getUnit from '../../utils/getUnit';
 import { MathComponent } from 'mathjax-react'
-import { InputAdornment } from '@material-ui/core';
+import { InputAdornment } from '@mui/material';
 
 
 const useStyles = makeStyles((theme) => ({

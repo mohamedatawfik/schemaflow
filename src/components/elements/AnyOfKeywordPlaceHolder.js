@@ -1,16 +1,16 @@
 import React, { useState, useContext } from "react";
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { FormContext } from "../../FormContext";
 import deleteKey from "../utils/deleteKey";
 import EditElement from "../EditElement";
 import getValue from "../utils/getValue";
 import set from "set-value";
-import { Tooltip } from "@material-ui/core";
-import { FormControl } from "@material-ui/core";
-import { FormLabel } from "@material-ui/core";
-import { FormHelperText } from "@material-ui/core";
-import { IconButton } from "@material-ui/core";
+import { Tooltip } from "@mui/material";
+import { FormControl } from "@mui/material";
+import { FormLabel } from "@mui/material";
+import { FormHelperText } from "@mui/material";
+import { IconButton } from "@mui/material";
 
 const AnyOfKeywordPlaceHolder = ({ pathFormData, path, field_required, field_uri, field_key, field_index, edit, field_label, field_description, field_prefixItems, anyOf_list }) => {
     const [openDialog, setOpenDialog] = useState(false);

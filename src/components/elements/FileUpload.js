@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react'
-import { FormLabel, FormHelperText, FormControl } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from "@material-ui/icons/Delete";
-import { IconButton, Button } from '@material-ui/core';
+import { FormLabel, FormHelperText, FormControl } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton, Button } from '@mui/material';
 import EditElement from '../EditElement';
 import { FormContext } from '../../FormContext';
 import deleteKey from '../utils/deleteKey';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import getValue from '../utils/getValue';
 import set from 'set-value';
 import { useDropzone } from "react-dropzone";
 import LinearProgress from '@mui/material/LinearProgress';
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import NotRenderable from "../../assets/not-renderable.png"
 import FileIcon from "../../assets/file-icon.svg"
 

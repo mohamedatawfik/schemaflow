@@ -1,24 +1,25 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { AccordionDetails } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from "@material-ui/icons/AddBox";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { makeStyles, withStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import { AccordionDetails } from '@mui/material';
+import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from "@mui/icons-material/AddBox";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { FormContext } from "../../FormContext";
-import DragHandleIcon from "@material-ui/icons/DragIndicator";
+import DragHandleIcon from "@mui/icons-material/DragIndicator";
 import deleteKey from "../utils/deleteKey";
 import EditElement from "../EditElement";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrayItemRenderer from "./ArrayItemRenderer";
 import generateUniqueID from "../utils/generateUniqueID";
-import { Tooltip } from "@material-ui/core";
+import { Tooltip } from "@mui/material";
 import getValue from "../utils/getValue";
 import set from "set-value";
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import { toast } from "react-toastify";
 import getFileIndex from "../utils/getFileIndex";
 import { useDropzone } from "react-dropzone";
@@ -749,13 +750,17 @@ const ArrayType = ({ adamant_field_error, adamant_error_description, maxItems, m
                     style={inputError ? { backgroundColor: "white", borderRadius: "4px", borderBottom: '1px solid  #ff7961' } : { backgroundColor: "rgba(232, 244, 253, 1)", borderBottom: '1px solid  rgba(0, 0, 0, .0)' }}
                     expandIcon={/*withinObject ? null : */
                         <Tooltip placement="top" title={`Collapse/Expand this container`}>
-                            <ExpandMoreIcon />
+                            <IconButton
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    expandOnChange();
+                                }}
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
                         </Tooltip>}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
-                    IconButtonProps={{
-                        onClick: expandOnChange
-                    }}
                 >
                     <div style={{ paddingTop: "10px", paddingBottom: "10px", display: 'inline-flex', width: '100%' }}>
                         <div style={{ width: "100%" }}>

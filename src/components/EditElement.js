@@ -1,25 +1,25 @@
 import React, { useContext, useEffect, useState, useCallback} from 'react'
-import TextField from "@material-ui/core/TextField"
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import Divider from '@material-ui/core/Divider';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from "@mui/material/TextField"
+import { makeStyles } from '@mui/styles';
+import { Button } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import Divider from '@mui/material/Divider';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import checkIfFieldIDExist from './utils/checkIfFieldIDExist';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { FormContext } from '../FormContext';
-import { Checkbox } from '@material-ui/core';
-import { FormGroup } from '@material-ui/core';
+import { Checkbox } from '@mui/material';
+import { FormGroup } from '@mui/material';
 import updateRequired from './utils/updateRequired';
-import { IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from "@material-ui/icons/AddBox";
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import AddIcon from "@mui/icons-material/AddBox";
 import getValue from './utils/getValue';
 import { useDropzone } from "react-dropzone";
 import object2array from './utils/object2array';

@@ -1,31 +1,31 @@
 import React, { useState, useContext } from "react";
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-//import Accordion from "@material-ui/core/Accordion";
-import { AccordionDetails } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from "@material-ui/icons/AddBox";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { makeStyles, withStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+//import Accordion from "@mui/material/Accordion";
+import { AccordionDetails } from '@mui/material';
+import { Button } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from "@mui/icons-material/AddBox";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { FormContext } from "../../FormContext";
-import DragHandleIcon from "@material-ui/icons/DragIndicator";
+import DragHandleIcon from "@mui/icons-material/DragIndicator";
 import deleteKey from "../utils/deleteKey";
 import EditElement from "../EditElement";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrayItemRenderer from "./ArrayItemRenderer";
 import generateUniqueID from "../utils/generateUniqueID";
-import { IconButton } from "@material-ui/core";
-import { TextField } from "@material-ui/core";
+import { IconButton } from "@mui/material";
+import { TextField } from "@mui/material";
 import ElementRenderer from "../ElementRenderer";
 import ObjectType from "./ObjectType";
 import object2array from "../utils/object2array";
 import getValue from "../utils/getValue";
 import set from "set-value";
-import { Tooltip } from "@material-ui/core";
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
+import { Tooltip } from "@mui/material";
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -305,13 +305,18 @@ const AnyOfKeyword = ({ pathFormData, path, field_required, field_uri, field_key
                 <AccordionSummary
                     expandIcon={
                         <Tooltip placement="top" title={`Collapse/Expand this container`}>
-                            <ExpandMoreIcon />
-                        </Tooltip>}
+                            <IconButton
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    expandOnChange();
+                                }}
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        </Tooltip>
+                    }
                     aria-controls="panel1a-content"
                     id="panel1a-header"
-                    IconButtonProps={{
-                        onClick: expandOnChange
-                    }}
                 >
                     <div style={{ paddingTop: "10px", paddingBottom: "10px", display: 'inline-flex', width: '100%' }}>
                         <div style={{ width: "100%" }}>

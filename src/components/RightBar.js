@@ -1,6 +1,6 @@
 import { IconButton, InputBase, Paper, Icon } from "@mui/material";
-import SearchIcon from "@material-ui/icons/Search"
-import { Button, Divider } from "@material-ui/core";
+import SearchIcon from "@mui/icons-material/Search"
+import { Button, Divider } from "@mui/material";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 

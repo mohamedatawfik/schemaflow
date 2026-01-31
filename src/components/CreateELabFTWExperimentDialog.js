@@ -1,17 +1,17 @@
 import React from 'react'
-import TextField from "@material-ui/core/TextField"
-import { Button } from '@material-ui/core';
-import Divider from '@material-ui/core/Divider';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import { IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import { Autocomplete } from '@material-ui/lab';
+import TextField from "@mui/material/TextField"
+import { Button } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const CreateELabFTWExperimentDialog = ({ getTagsELabFTW, eLabURL, setELabURL, setTags, tags, setRetrievedTags, retrievedTags, setExperimentTitle, setToken, token, setOpenCreateElabFTWExperimentDialog, openCreateElabFTWExperimentDialog, createExperimentELabFTW }) => {

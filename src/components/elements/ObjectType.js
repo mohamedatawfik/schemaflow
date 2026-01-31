@@ -1,25 +1,26 @@
 import React, { useState, useContext, useEffect } from "react";
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@mui/styles';
 import ElementRenderer from "../ElementRenderer";
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-//import Accordion from "@material-ui/core/Accordion";
-import { AccordionDetails } from '@material-ui/core';
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Button } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from "@material-ui/icons/AddBox";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+//import Accordion from "@mui/material/Accordion";
+import { AccordionDetails } from '@mui/material';
+import { IconButton } from '@mui/material';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Button } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from "@mui/icons-material/AddBox";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { FormContext } from "../../FormContext";
-import DragHandleIcon from "@material-ui/icons/DragIndicator";
+import DragHandleIcon from "@mui/icons-material/DragIndicator";
 import deleteKey from "../utils/deleteKey";
 import EditElement from "../EditElement";
-import { Tooltip } from "@material-ui/core";
+import { Tooltip } from "@mui/material";
 import getValue from "../utils/getValue";
 import set from "set-value";
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import getValueInSchemaFullPath from "../utils/getValueInSchemaFullPath";
 import getFileIndex from "../utils/getFileIndex";
 
@@ -239,11 +240,15 @@ const ObjectType = ({ adamant_error_description, adamant_field_error, dataInputI
                     style={inputError ? { backgroundColor: "white", borderRadius: "4px", borderBottom: '1px solid  #ff7961', height: "auto" } : { backgroundColor: "rgba(232, 244, 253, 1)", borderBottom: '1px solid  rgba(0, 0, 0, .0)', height: "auto" }}
                     expandIcon={
                         <Tooltip placement="top" title={`Collapse/Expand this container`}>
-                            <ExpandMoreIcon />
+                            <IconButton
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    expandOnChange();
+                                }}
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
                         </Tooltip>}
-                    IconButtonProps={{
-                        onClick: expandOnChange
-                    }}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >

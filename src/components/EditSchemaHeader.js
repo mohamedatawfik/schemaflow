@@ -1,18 +1,18 @@
 import React, { useContext, useState } from 'react'
-import TextField from "@material-ui/core/TextField"
-import { Button } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import Divider from '@material-ui/core/Divider';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import TextField from "@mui/material/TextField"
+import { Button } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import Divider from '@mui/material/Divider';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { FormContext } from '../FormContext';
-import { IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const changeKeywords = (convertedSchema, oldKey, desiredNewKey) => {

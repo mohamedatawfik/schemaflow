@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ElementRenderer from "../../ElementRenderer";
-import Divider from '@material-ui/core/Divider';
-import Accordion from "@material-ui/core/Accordion";
-import { AccordionDetails, AccordionSummary } from '@material-ui/core';
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Button } from '@material-ui/core';
-import DeleteIcon from "@material-ui/icons/Delete";
+import Divider from '@mui/material/Divider';
+import Accordion from "@mui/material/Accordion";
+import { AccordionDetails, AccordionSummary } from '@mui/material';
+import { IconButton } from '@mui/material';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Button } from '@mui/material';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { FileIcon, defaultStyles } from 'react-file-icon'
 
 const ItemObjectType = ({ path, dataInputItems, setDataInputItems, field_label, pathFormData, field_required, field_items, field_type, edit, index, field_key, handleDeleteArrayItem }) => {
@@ -54,11 +55,17 @@ const ItemObjectType = ({ path, dataInputItems, setDataInputItems, field_label, 
         <div style={{ width: "100%", padding: "10px 0px 10px 0px" }}>
             <Accordion expanded={expand} >
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
+                    expandIcon={
+                        <IconButton
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                expandOnChange();
+                            }}
+                        >
+                            <ExpandMoreIcon />
+                        </IconButton>
+                    }
                     style={{ verticalAlign: "middle", height: "auto" }}
-                    IconButtonProps={{
-                        onClick: expandOnChange
-                    }}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >

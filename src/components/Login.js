@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import QPTDATLogo from "../assets/adamant-header-5.svg";
 import EMPIRFLogo from "../assets/EMPI_Logo_reactive-fluids_Color_Black.png"
 

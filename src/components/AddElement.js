@@ -1,23 +1,23 @@
 import React, { useContext, useState } from 'react'
-import TextField from "@material-ui/core/TextField"
-import { Button } from '@material-ui/core';
-import AddIcon from "@material-ui/icons/AddBox";
-import Divider from '@material-ui/core/Divider';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import TextField from "@mui/material/TextField"
+import { Button } from '@mui/material';
+import AddIcon from "@mui/icons-material/AddBox";
+import Divider from '@mui/material/Divider';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { FormContext } from '../FormContext';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox } from '@mui/material';
 import updateRequired from './utils/updateRequired';
 import getValue from './utils/getValue';
 import checkIfFieldIDExist from './utils/checkIfFieldIDExist';
-import { IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const AddElement = ({ enumerated, field_enumerate, field_required, defaultSchema, path, openDialog, setOpenDialog, UISchema, schemaTitle }) => {

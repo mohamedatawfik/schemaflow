@@ -1,16 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react'
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from "@material-ui/icons/Delete";
-import { IconButton } from '@material-ui/core';
+import TextField from "@mui/material/TextField";
+import { makeStyles } from '@mui/styles';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from '@mui/material';
 import EditElement from '../EditElement';
 import { FormContext } from '../../FormContext';
 import deleteKey from '../utils/deleteKey';
-import { InputAdornment } from '@material-ui/core';
+import { InputAdornment } from '@mui/material';
 import getUnit from '../utils/getUnit';
 import { MathComponent } from 'mathjax-react'
-import { Tooltip } from '@material-ui/core';
+import { Tooltip } from '@mui/material';
 import getValue from '../utils/getValue';
 import set from 'set-value';
 

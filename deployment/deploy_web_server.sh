@@ -1,10 +1,47 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_URL=${REPO_URL:-git@github.com:Toxnix/Adamant_full.git}
+REPO_DIR=${REPO_DIR:-Adamant_full}
+ROOT_DIR="$SCRIPT_DIR/$REPO_DIR"
 
 echo "Cloning the Adamant repository..."
-git clone git@github.com:Toxnix/Adamant_full.git
-cd Adamant_full
+if [ ! -d "$ROOT_DIR/.git" ]; then
+    git clone "$REPO_URL" "$ROOT_DIR"
+else
+    echo "Repository already exists at $ROOT_DIR"
+fi
+
+if [ ! -f "$ROOT_DIR/package.json" ] || [ ! -d "$ROOT_DIR/backend" ]; then
+    echo "Error: Repository is missing expected files. Check REPO_URL/REPO_DIR."
+    exit 1
+fi
+
+#+ Optional cleanup flag: pass --clean/--cleanup
+CLEAN_BEFORE_INSTALL=0
+for arg in "$@"; do
+    case "$arg" in
+        --clean|--cleanup)
+            CLEAN_BEFORE_INSTALL=1
+            ;;
+    esac
+done
+if [ "$CLEAN_BEFORE_INSTALL" = "1" ]; then
+    echo "Preparing system (cleanup to avoid conflicts)..."
+    echo "Removing potentially conflicting Node.js/npm installs..."
+    sudo apt remove -y nodejs npm yarn || true
+    sudo apt purge -y nodejs npm yarn || true
+    sudo apt autoremove -y || true
+    sudo rm -f /usr/local/bin/node /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack || true
+    sudo rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack || true
+    sudo rm -f /etc/apt/sources.list.d/nodesource.list /etc/apt/sources.list.d/nodesource.list.save || true
+
+    echo "Cleaning old frontend installs..."
+    rm -rf "$ROOT_DIR/node_modules" "$ROOT_DIR/package-lock.json" || true
+    rm -rf "$ROOT_DIR/db-ui/node_modules" "$ROOT_DIR/db-ui/package-lock.json" || true
+fi
 
 echo "Installing dependencies for Machine 1 (Ubuntu 24.04)..."
 sudo apt update
@@ -20,9 +57,9 @@ echo "npm version: $(npm -v)"
 
 echo "Setting up MariaDB..."
 # Load environment variables from .env file if it exists
-if [ -f .env ]; then
+if [ -f "$ROOT_DIR/.env" ]; then
     set -a
-    source .env
+    source "$ROOT_DIR/.env"
     set +a
 else
     echo "Warning: .env file not found. Using default values."
@@ -33,7 +70,7 @@ else
 fi
 
 # Write DB config for backend
-cat > backend/conf/db_config.json <<EOF
+cat > "$ROOT_DIR/backend/conf/db_config.json" <<EOF
 {
   "DB_HOST": "127.0.0.1",
   "DB_PORT": 3306,
@@ -83,7 +120,7 @@ fi
 echo "MariaDB setup complete. Database '${DB_NAME}' and user '${DB_USER}' created."
 
 echo "Setting up Python backend..."
-cd backend
+cd "$ROOT_DIR/backend"
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -112,33 +149,36 @@ sudo systemctl start adamant-backend
 
 
 echo "Setting up Node frontend..."
-cd ..  # Go back to adamant root directory
-
-npm install && npm run build
+cd "$ROOT_DIR"
+# Work around React 18 + Material-UI v4 peer dependency conflicts.
+NPM_INSTALL_FLAGS=${NPM_INSTALL_FLAGS:---legacy-peer-deps}
+npm install $NPM_INSTALL_FLAGS
+npm run build
 
 echo "Copying adamant build to Nginx root..."
-sudo cp -r build /var/www/html/
+sudo cp -r "$ROOT_DIR/build" /var/www/html/
 
-cd db-ui
-npm install && npm run build
+cd "$ROOT_DIR/db-ui"
+npm install $NPM_INSTALL_FLAGS
+npm run build
 
 echo "Copying db-ui build to Nginx root..."
 sudo mkdir -p /var/www/html/build/db-ui
-sudo cp -r build/* /var/www/html/build/db-ui/
+sudo cp -r "$ROOT_DIR/db-ui/build/"* /var/www/html/build/db-ui/
 
 echo "Setting up Nginx..."
-cd ..  # Go back to adamant root directory
-sudo cp deployment/nginx.default.prod.conf /etc/nginx/conf.d/adamant.conf
+cd "$ROOT_DIR"
+sudo cp "$ROOT_DIR/deployment/nginx.default.prod.conf" /etc/nginx/conf.d/adamant.conf
 sudo systemctl restart nginx
 
 echo "Copying Bash scripts to /home/user/scripts..."
 mkdir -p /home/user/scripts
-cp bin/insert_data2db.sh /home/user/scripts/
+cp "$ROOT_DIR/bin/insert_data2db.sh" /home/user/scripts/
 chmod +x /home/user/scripts/insert_data2db.sh
 
 echo "Copying .env file to /home/user/scripts/..."
-if [ -f .env ]; then
-    cp .env /home/user/scripts/.env
+if [ -f "$ROOT_DIR/.env" ]; then
+    cp "$ROOT_DIR/.env" /home/user/scripts/.env
     echo ".env file copied successfully."
 else
     echo "Warning: .env file not found. Please create and configure it manually in /home/user/scripts/.env"
@@ -160,6 +200,6 @@ sudo certbot --nginx \
     -d "${SSL_DOMAIN}"
 
 echo "Setting up cron jobs..."
-bash ./setup_cron_web_server.sh
+bash "$ROOT_DIR/deployment/setup_cron_web_server.sh"
 
 echo "Adamant Web Server Machine setup complete."
