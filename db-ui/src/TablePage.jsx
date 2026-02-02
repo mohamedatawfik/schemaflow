@@ -54,8 +54,8 @@ function JoinTablePage() {
   const defaultColumn = useMemo(
     () => ({
       minSize: 80,
-      maxSize: 500,
-      size: 140,
+      maxSize: 5000,
+      size: 220,
     }),
     []
   );
