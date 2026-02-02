@@ -2,6 +2,16 @@
 
 ADAMANT v3.0 is a JSON-Schema-based metadata editor and WebDAV-to-MariaDB intake tool for FAIR research workflows. It renders interactive forms from JSON Schema, validates user input, and produces JSON datasets that can be ingested into MariaDB.
 
+This project builds on the upstream work at `https://github.com/plasma-mds/adamant`.
+
+## What’s new in v3.0
+
+- **WebDAV → MariaDB ingest** (`bin/webdav_ingest.py`) with state tracking
+- **End‑to‑end Nextcloud workflow** for FAIR metadata
+- **Embedded DB Web UI** for browsing and joins
+- **One‑shot Ubuntu deployment script** with systemd services
+- **Nginx Basic Auth** for the entire UI/API
+
 ## Features
 
 - Render interactive forms from JSON Schema
@@ -11,6 +21,16 @@ ADAMANT v3.0 is a JSON-Schema-based metadata editor and WebDAV-to-MariaDB intake
 - Download JSON schema and datasets (adds `SchemaID`)
 - WebDAV ingest (`bin/webdav_ingest.py`) for automated DB upserts
 - Embedded DB UI for browsing and joining tables
+
+## Workflow focus (FAIR metadata)
+
+ADAMANT is designed around a practical workflow for FAIR metadata in a Nextcloud environment:
+
+1. **Schema authoring** in the web UI (JSON Schema draft‑07).
+2. **Dataset creation** by researchers using the rendered forms.
+3. **Storage in Nextcloud** (WebDAV) as JSON files.
+4. **Automated ingest** into MariaDB via the WebDAV ingester.
+5. **Exploration and export** through the embedded Web UI.
 
 ## Supported JSON Schema Keywords
 
