@@ -58,6 +58,13 @@ if [ "$CLEAN_BEFORE_INSTALL" = "1" ]; then
     sudo rm -f /etc/systemd/system/adamant-webdav-ingest.service
     sudo systemctl daemon-reload
 
+    echo "Removing Nginx and Certbot for a clean reinstall..."
+    sudo systemctl stop nginx 2>/dev/null || true
+    sudo systemctl stop certbot.timer certbot.service 2>/dev/null || true
+    sudo apt purge -y nginx nginx-common nginx-core || true
+    sudo apt purge -y certbot python3-certbot-nginx || true
+    sudo rm -rf /etc/nginx /etc/letsencrypt /var/lib/letsencrypt /var/log/letsencrypt
+
     echo "Removing potentially conflicting Node.js/npm installs..."
     sudo apt remove -y nodejs npm yarn || true
     sudo apt purge -y nodejs npm yarn || true
