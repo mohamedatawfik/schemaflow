@@ -51,6 +51,13 @@ for arg in "$@"; do
 done
 if [ "$CLEAN_BEFORE_INSTALL" = "1" ]; then
     echo "Preparing system (cleanup to avoid conflicts)..."
+    echo "Removing previously installed Adamant services..."
+    sudo systemctl disable --now adamant-backend 2>/dev/null || true
+    sudo systemctl disable --now adamant-webdav-ingest 2>/dev/null || true
+    sudo rm -f /etc/systemd/system/adamant-backend.service
+    sudo rm -f /etc/systemd/system/adamant-webdav-ingest.service
+    sudo systemctl daemon-reload
+
     echo "Removing potentially conflicting Node.js/npm installs..."
     sudo apt remove -y nodejs npm yarn || true
     sudo apt purge -y nodejs npm yarn || true
@@ -298,11 +305,17 @@ fi
 if [ "$SSL_DOMAIN" = "_" ]; then
     echo "Skipping certbot: SSL_DOMAIN is empty."
 else
-    sudo certbot --nginx \
-        --non-interactive \
-        --agree-tos \
-        --email "${SSL_EMAIL}" \
-        -d "${SSL_DOMAIN}"
+    CERT_PATH="/etc/letsencrypt/live/${SSL_DOMAIN}/fullchain.pem"
+    KEY_PATH="/etc/letsencrypt/live/${SSL_DOMAIN}/privkey.pem"
+    if [ -f "$CERT_PATH" ] && [ -f "$KEY_PATH" ]; then
+        echo "Existing SSL certificate found for ${SSL_DOMAIN}. Skipping certbot."
+    else
+        sudo certbot --nginx \
+            --non-interactive \
+            --agree-tos \
+            --email "${SSL_EMAIL}" \
+            -d "${SSL_DOMAIN}"
+    fi
 fi
 
 echo "Adamant Web Server Machine setup complete."
