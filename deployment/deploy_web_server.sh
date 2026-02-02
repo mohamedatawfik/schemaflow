@@ -67,7 +67,7 @@ fi
 echo "Installing dependencies for Machine 1 (Ubuntu 24.04)..."
 sudo apt update
 sudo apt install -y ca-certificates curl gnupg git jq inotify-tools rsync \
-  python3-venv python3-dev build-essential libjpeg-dev zlib1g-dev \
+  python3-venv python3-dev build-essential libjpeg-dev zlib1g-dev apache2-utils \
   mariadb-server mariadb-client nginx certbot python3-certbot-nginx
 
 echo "Installing Node.js LTS (includes current npm)..."
@@ -89,6 +89,9 @@ if [ -n "$ENV_FILE" ]; then
     set -a
     source "$ENV_FILE"
     set +a
+    if [ "$ENV_FILE" != "$ROOT_DIR/.env" ]; then
+        cp "$ENV_FILE" "$ROOT_DIR/.env"
+    fi
 else
     echo "Warning: .env file not found. Using default values."
     DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-rootpassword}
@@ -98,12 +101,20 @@ else
 fi
 SSL_EMAIL=${SSL_EMAIL:-admin@example.com}
 SSL_DOMAIN=${SSL_DOMAIN:-metadata.empi-rf.de}
+BASIC_AUTH_USER=${BASIC_AUTH_USER:-}
+BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD:-}
+BASIC_AUTH_REALM=${BASIC_AUTH_REALM:-"ADAMANT"}
+
+if [ -z "$BASIC_AUTH_USER" ] || [ -z "$BASIC_AUTH_PASSWORD" ]; then
+    echo "Error: BASIC_AUTH_USER and BASIC_AUTH_PASSWORD must be set in .env"
+    exit 1
+fi
 
 # Write DB config for backend
 cat > "$ROOT_DIR/backend/conf/db_config.json" <<EOF
 {
-  "DB_HOST": "127.0.0.1",
-  "DB_PORT": 3306,
+  "DB_HOST": "${DB_HOST:-127.0.0.1}",
+  "DB_PORT": ${DB_PORT:-3306},
   "DB_USER": "${DB_USER}",
   "DB_PASSWORD": "${DB_PASSWORD}",
   "DB_NAME": "${DB_NAME}"
@@ -154,6 +165,7 @@ cd "$ROOT_DIR/backend"
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+pip install -r "$ROOT_DIR/bin/webdav_ingest.requirements.txt"
 
 sudo tee /etc/systemd/system/adamant-backend.service > /dev/null <<EOF
 [Unit]
@@ -171,11 +183,31 @@ ExecStart=$(pwd)/venv/bin/gunicorn -b 0.0.0.0:5000 api:app
 WantedBy=multi-user.target
 EOF
 
+sudo tee /etc/systemd/system/adamant-webdav-ingest.service > /dev/null <<EOF
+[Unit]
+Description=Adamant WebDAV Ingest Service
+After=network.target
+
+[Service]
+User=$SERVICE_USER
+Group=www-data
+WorkingDirectory=$ROOT_DIR
+Environment="PATH=$ROOT_DIR/backend/venv/bin"
+ExecStart=$ROOT_DIR/backend/venv/bin/python $ROOT_DIR/bin/webdav_ingest.py --log-level INFO
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 # Reload systemd and start backend service
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl enable adamant-backend
 sudo systemctl start adamant-backend
+sudo systemctl enable adamant-webdav-ingest
+sudo systemctl start adamant-webdav-ingest
 
 
 echo "Setting up Node frontend..."
@@ -204,19 +236,52 @@ if [ -z "$SSL_DOMAIN" ]; then
     echo "Warning: SSL_DOMAIN is empty; using '_' as a catch-all server_name."
     SSL_DOMAIN="_"
 fi
-NGINX_CONF_SRC="$ROOT_DIR/deployment/nginx.default.prod.conf"
-NGINX_CONF_TMP="$(mktemp)"
-sed "s/__SSL_DOMAIN__/${SSL_DOMAIN}/g" "$NGINX_CONF_SRC" > "$NGINX_CONF_TMP"
-sudo cp "$NGINX_CONF_TMP" /etc/nginx/conf.d/adamant.conf
-rm -f "$NGINX_CONF_TMP"
+sudo tee /etc/nginx/conf.d/adamant.conf > /dev/null <<EOF
+server {
+    listen       80;
+    listen  [::]:80;
+
+    server_name  ${SSL_DOMAIN};
+
+    root   /var/www/html/build;
+    index index.html;
+    error_page   500 502 503 504  /50x.html;
+    client_max_body_size 64M;
+    auth_basic "${BASIC_AUTH_REALM}";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+
+    location / {
+        try_files \$uri \$uri/ /index.html;
+        add_header Cache-Control "no-cache";
+        client_max_body_size 64M;
+    }
+
+    location /static {
+        expires 1y;
+        add_header Cache-Control "public";
+        client_max_body_size 64M;
+    }
+
+    location /api {
+        proxy_pass http://localhost:5000;
+        client_max_body_size 64M;
+    }
+
+    location /db-ui/ {
+        alias /var/www/html/build/db-ui/;
+        index index.html;
+        try_files \$uri \$uri/ /db-ui/index.html;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate";
+    }
+
+}
+EOF
+echo "Nginx config written to /etc/nginx/conf.d/adamant.conf"
+sudo htpasswd -bc /etc/nginx/.htpasswd "$BASIC_AUTH_USER" "$BASIC_AUTH_PASSWORD"
 sudo systemctl restart nginx
 
-echo "Copying Bash scripts to ${SCRIPTS_DIR}..."
-mkdir -p "$SCRIPTS_DIR"
-cp "$ROOT_DIR/bin/insert_data2db.sh" "$SCRIPTS_DIR/"
-chmod +x "$SCRIPTS_DIR/insert_data2db.sh"
-
 echo "Copying .env file to ${SCRIPTS_DIR}/..."
+mkdir -p "$SCRIPTS_DIR"
 if [ -f "$ROOT_DIR/.env" ]; then
     cp "$ROOT_DIR/.env" "$SCRIPTS_DIR/.env"
     echo ".env file copied successfully."
@@ -239,8 +304,5 @@ else
         --email "${SSL_EMAIL}" \
         -d "${SSL_DOMAIN}"
 fi
-
-echo "Setting up cron jobs..."
-bash "$ROOT_DIR/deployment/setup_cron_web_server.sh"
 
 echo "Adamant Web Server Machine setup complete."

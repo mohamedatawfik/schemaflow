@@ -11,7 +11,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { FormContext } from '../FormContext';
 import DragHandleIcon from "@mui/icons-material/DragIndicator";
 import UploadDataIcon from '@mui/icons-material/UploadFile';
-import JsonIcon from "../assets/json-file-svgrepo-com.svg";
+import DataObjectIcon from "@mui/icons-material/DataObject";
 import RevertIvon from "@mui/icons-material/History";
 import EditSchemaHeader from "./EditSchemaHeader";
 import JSONSchemaViewerDialog from "./JSONSchemaViewerDialog";
@@ -133,7 +133,7 @@ const FormRenderer = ({ setSchemaSpecification, revertAllChanges, schema, edit, 
                 <Typography className={classes.heading} style={{ width: "100%" }}>{title}</Typography>
                 <Tooltip placement="top" title="View JSON Schema for this form">
                     <Button onClick={() => setOpenSchemaViewer(true)} style={{ marginLeft: "5px" }}>
-                        <img src={JsonIcon} alt="JSON" style={{ height: "22px" }} />
+                        <DataObjectIcon color="primary" />
                     </Button>
                 </Tooltip>
                 <Tooltip placement="top" title="Upload input data for this form">
@@ -191,7 +191,7 @@ const FormRenderer = ({ setSchemaSpecification, revertAllChanges, schema, edit, 
             </DragDropContext>
         </div>
         {openDialogAddElement ? <EditElement editOrAdd={"add"} openDialog={openDialogAddElement} setOpenDialog={setOpenDialogAddElement} defaultSchema={defaultSchema} schemaTitle={title} field_label={"this schema"} /> : null}
-        {openDialog ? <EditSchemaHeader schemaID={id !== undefined ? id : $id} title={title} description={description} schemaVersion={$schema} openDialog={openDialog} setOpenDialog={setOpenDialog} /> : null}
+        {openDialog ? <EditSchemaHeader schemaID={id !== undefined ? id : $id} title={title} description={description} openDialog={openDialog} setOpenDialog={setOpenDialog} /> : null}
         {openSchemaViewer ? <JSONSchemaViewerDialog
             openSchemaViewer={openSchemaViewer}
             setOpenSchemaViewer={setOpenSchemaViewer}

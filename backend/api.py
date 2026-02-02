@@ -392,30 +392,5 @@ def left_join():
     except Exception as e:
         return jsonify({"error": f"Error performing LEFT JOIN: {str(e)}"}), 500
 
-# Login endpoint
-@app.route('/api/login', methods=["POST"])
-def login():
-    data = request.json
-    username = data.get("username")
-    password = data.get("password")
-
-    # Check if username and password match the hardcoded admin credentials
-    if username == 'admin' and password == 'admin':
-        # Generate token
-        token = 'dummy_token_for_admin'
-        # Return token to frontend
-        return jsonify({"token": token}), 200
-    else:
-        # If credentials are incorrect, return error message
-        return jsonify({"error": "Invalid username or password"}), 401
-
-#Get protected Data
-# @app.route('/api/protected', methods=["GET"])
-# @jwt_required()
-# def protected():
-#     current_user = get_jwt_identity()
-#     return jsonify(logged_in_as=current_user), 200
-
-
 # if __name__ == "__main__":
 #    app.run(debug=True, host="0.0.0.0", port=5000)

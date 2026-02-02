@@ -4,20 +4,20 @@
   "private": true,
   "homepage": "/db-ui",
   "dependencies": {
+    "@e965/xlsx": "^0.20.3",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
-    "@mui/icons-material": "^6.1.8",
-    "@mui/material": "^6.1.8",
+    "@mui/icons-material": "^7.3.7",
+    "@mui/material": "^7.3.7",
     "@mui/x-date-pickers": "^8.11.1",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "export-to-csv": "^1.4.0",
     "material-react-table": "^3.2.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-toastify": "^11.0.5",
-    "@e965/xlsx": "^0.20.3"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-toastify": "^11.0.5"
   },
   "scripts": {
     "start": "vite",
@@ -45,7 +45,7 @@
     ]
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.4.6"
+    "@vitejs/plugin-react": "^5.1.2",
+    "vite": "^7.3.1"
   }
 }

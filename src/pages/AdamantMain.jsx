@@ -2,9 +2,6 @@ import React, { useCallback, useState } from "react";
 import $ from "jquery";
 //import { makeStyles } from "@mui/styles";
 import { useDropzone } from "react-dropzone";
-import { useHistory } from 'react-router-dom';
-import { useDispatch} from 'react-redux';
-import { logoutSuccess } from '../redux/actions/authActions';
 //import QPTDATLogo from "../assets/header-image.png";
 import FormRenderer from "../components/FormRenderer";
 import Button from "@mui/material/Button";
@@ -114,11 +111,8 @@ const AdamantMain = ({ onLogout }) => {
   const [submitTextList, setSubmitTextList] = useState([]);
   const [setSubmitText] = useState("Submit Job Request");
   const [browseExpirementsMode, setBrowseExpirementsMode] = useState(false);
-  const dispatch = useDispatch();
-  const dbUiUrl =
-    window.location.port === "3000"
-      ? "http://localhost:3001/db-ui/"
-      : "/db-ui/";
+  const isDev = import.meta.env && import.meta.env.DEV;
+  const dbUiUrl = isDev ? "http://localhost:3001/db-ui/" : "/db-ui/";
   useEffect(() => {
     document.body.style.overflow = browseExpirementsMode ? "hidden" : "";
     return () => {
@@ -156,11 +150,11 @@ const AdamantMain = ({ onLogout }) => {
         setSubmitTextList(status["submitButtonText"]);
         setOnlineMode(true);
         toast.success(
-          <>
+          <div>
             <div>
               <strong>Connection to server is established.</strong>
             </div>
-          </>,
+          </div>,
           {
             toastId: "connectionSuccess",
           }
@@ -191,12 +185,12 @@ const AdamantMain = ({ onLogout }) => {
         ]);
 
         toast.warning(
-          <>
+          <div>
             <div>
               <strong>Unable to establish connection to server.</strong>
             </div>
             <div>Submit feature is disabled.</div>
-          </>,
+          </div>,
           {
             toastId: "connectionWarning",
           }
@@ -327,14 +321,7 @@ const AdamantMain = ({ onLogout }) => {
     }
   };
   
-  const history = useHistory();
-  const handleLogout = () => {
-    // Remove session token from localStorage
-    localStorage.removeItem('sessionToken');
-    dispatch(logoutSuccess());
-    // Optionally, redirect to login page
-    history.push('/');
-  };
+  
 
   // handle select schema on change
   const handleSelectSchemaOnChange = (schemaName) => {
@@ -689,12 +676,12 @@ const AdamantMain = ({ onLogout }) => {
       setDisable(true);
     } else {
       toast.error(
-        <>
+        <div>
           <div>
             <strong>Your schema is not valid.</strong>
           </div>
           {message}
-        </>,
+        </div>,
         {
           toastId: "schemaError",
         }
@@ -946,7 +933,7 @@ const AdamantMain = ({ onLogout }) => {
     setErrorStuffUponValidation(messages);
     if (!valid | (Object.keys(content).length === 0)) {
       toast.error(
-        <>
+        <div>
           <div>
             <strong>Form data is not valid.</strong>
           </div>
@@ -954,7 +941,7 @@ const AdamantMain = ({ onLogout }) => {
           {messages.map((item, index) => {
             return <div key={index}>{index + 1 + ". " + item.message}</div>;
           })}
-        </>,
+        </div>,
         {
           autoClose: 10000,
           toastId: "formDataError",
@@ -996,11 +983,11 @@ const AdamantMain = ({ onLogout }) => {
     if (isFileAlreadyExist) {
       console.log("File already exists. Skipping it.");
       toast.warning(
-        <>
+        <div>
           <div>
             <strong>File already loaded: {`${file["name"]}`}.</strong>
           </div>
-        </>,
+        </div>,
         {
           toastId: "fileAlreadyLoaded" + file["name"],
         }
@@ -1014,12 +1001,12 @@ const AdamantMain = ({ onLogout }) => {
       setLoadedFiles(files);
       console.log("File added. Current files:", loadedFiles);
       toast.success(
-        <>
+        <div>
           <div>
             <strong>File successfully loaded:</strong>
             {` ${file["name"]}`}.
           </div>
-        </>,
+        </div>,
         {
           toastId: "fileLoadedSuccessfully" + file["name"],
         }
@@ -1057,6 +1044,7 @@ const AdamantMain = ({ onLogout }) => {
         setSEMSelectedDevice,
         implementedFieldTypes,
         handleCheckIDexistence,
+        createScratchMode,
       }}
     >
       <div
@@ -1074,16 +1062,38 @@ const AdamantMain = ({ onLogout }) => {
             flex: browseExpirementsMode ? "0 0 auto" : undefined,
           }}
         >
-          <img
-            style={{ height: "100px", borderRadius: "2px", marginRight: "40px"}}
-            alt="header"
-            src={HeaderImage !== undefined ? HeaderImage : QPTDATLogo}
-          />
-          <img
-            style={{ height: "70px", borderRadius: "5px" }}
-            alt="empi-rf"
-            src={EMPIRFHeaderImage !== undefined ? EMPIRFHeaderImage : EMPIRFLogo}
-          />   
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              paddingRight: "10px",
+            }}
+          >
+            <img
+              style={{ height: "100px", borderRadius: "2px", marginRight: "40px"}}
+              alt="header"
+              src={HeaderImage !== undefined ? HeaderImage : QPTDATLogo}
+            />
+            <img
+              style={{ height: "70px", borderRadius: "5px", marginRight: "16px" }}
+              alt="empi-rf"
+              src={EMPIRFHeaderImage !== undefined ? EMPIRFHeaderImage : EMPIRFLogo}
+            />
+            <div
+              style={{
+                fontSize: "14px",
+                fontWeight: 600,
+                letterSpacing: "0.6px",
+                color: "#000000",
+                background: "#f5f5f5",
+                padding: "6px 12px",
+                borderRadius: "999px",
+                border: "1px solid #000000",
+              }}
+            >
+              ADAMANT v3.0
+            </div>
+          </div>
           {!inputMode ? (
             <div
               style={{
@@ -1370,18 +1380,6 @@ const AdamantMain = ({ onLogout }) => {
               )}
             </div>
           </>
-        )}
-        {/* <div style={{ padding: "10px", color: "grey" }}>ADAMANT v1.2.0</div>
-        <Button variant="contained" color="primary" onClick={handleLogin}>
-        Login
-        </Button> */}
-        {!browseExpirementsMode && (
-          <div style={{ padding: "10px", color: "grey" }}>
-            <div>ADAMANT v1.2.0</div>
-            <Button variant="contained" color="primary" onClick={handleLogout}>
-              Logout
-            </Button>
-          </div>
         )}
       </div>
     </FormContext.Provider>

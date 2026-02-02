@@ -46,18 +46,15 @@ const changeKeywords = (convertedSchema, oldKey, desiredNewKey) => {
     }
 }
 
-const EditSchemaHeader = ({ schemaVersion, title, description, schemaID, openDialog, setOpenDialog }) => {
+const EditSchemaHeader = ({ title, description, schemaID, openDialog, setOpenDialog }) => {
 
-    const [_schemaVersion, _setSchemaVersion] = useState(schemaVersion);
+    const latestSchemaDraft = "http://json-schema.org/draft-07/schema#";
+    const [_schemaVersion, _setSchemaVersion] = useState(latestSchemaDraft);
     const [_title, _setTitle] = useState(title);
     const [_description, _setDescription] = useState(description);
     const [_schemaID, _setSchemaID] = useState(schemaID);
     const { updateParent, convertedSchema, setSchemaSpecification } = useContext(FormContext);
     const [errorMessage, setErrorMessage] = useState(''); // State to store error messages
-
-
-    const allowedSchemaDrafts = ["http://json-schema.org/draft-04/schema#", "http://json-schema.org/draft-07/schema#"]
-
 
 
     // save the change and update the UI
@@ -207,8 +204,6 @@ const EditSchemaHeader = ({ schemaVersion, title, description, schemaID, openDia
                 return _setTitle(event.target.value)
             case 'description':
                 return _setDescription(event.target.value)
-            case 'version':
-                return _setSchemaVersion(event.target.value)
             case 'id':
                 // MariaDB/MySQL table name validation
                 const tableNameRegex = /^[a-zA-Z_][a-zA-Z0-9_]{0,63}$/;
@@ -228,7 +223,7 @@ const EditSchemaHeader = ({ schemaVersion, title, description, schemaID, openDia
     // cancel editing
     const handleCancelEdit = () => {
         _setDescription(description);
-        _setSchemaVersion(schemaVersion);
+        _setSchemaVersion(latestSchemaDraft);
         _setSchemaID(schemaID);
         _setTitle(title);
         setOpenDialog(false)
@@ -255,16 +250,6 @@ const EditSchemaHeader = ({ schemaVersion, title, description, schemaID, openDia
                     <div>
                         <FormControl component="widget-type">
                             <FormLabel style={{ color: "#01579b" }} component="legend">Basic Descriptors:</FormLabel>
-                            <TextField select helperText={"Specification version for this schema. The latest available version is recommended."} margin='normal' onChange={event => handleChangeUISchema(event, "version")} style={{ marginTop: "20px" }} defaultValue={schemaVersion} variant="outlined" fullWidth={true} label={"$schema"} SelectProps={{
-                                native: true,
-                            }}> {
-                                    allowedSchemaDrafts.map((content, index) => (
-                                        <option key={index} value={content}>
-                                            {content}
-                                        </option>
-                                    ))
-                                }
-                            </TextField>
                             <TextField margin='normal' onChange={event => handleChangeUISchema(event, "id")} style={{ marginTop: "10px" }} defaultValue={schemaID} variant="outlined" fullWidth={true} label={"Schema ID"} helperText={errorMessage || 'ID for this schema if available.'} error={!!errorMessage} />
                             <TextField margin='normal' onChange={event => handleChangeUISchema(event, "title")} style={{ marginTop: "10px" }} defaultValue={title} variant="outlined" fullWidth={true} label={"Schema Title"} helperText={"Title of the schema."} />
                             <TextField margin='normal' onChange={event => handleChangeUISchema(event, "description")} style={{ marginTop: "10px" }} defaultValue={description} variant="outlined" fullWidth={true} label={"Schema Description"} multiline rows={3} helperText="Description of the schema. Be more descriptive won't hurt." />

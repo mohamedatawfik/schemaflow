@@ -30,7 +30,7 @@ const App = () => {
           <Select
             value={currentPage}
             onChange={(e) => setCurrentPage(e.target.value)}
-            sx={{ color: "black", borderBottom: "2px solid white", variant: "outlined", backgroundColor: "white" }} 
+            sx={{ color: "black", borderBottom: "2px solid white", variant: "outlined", backgroundColor: "white", width: 320 }} 
           >
             <MenuItem value="Page1">Investigate Tables</MenuItem>
             <MenuItem value="Page2">Join Tables</MenuItem>
