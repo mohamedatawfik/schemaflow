@@ -1,0 +1,15 @@
+{
+  "FileTypeIdentifier": "This is a EMPI-RF metadata File. Do not change this for crawler identification",
+  "Identifier": "Raman-EXPERIMENT001",
+  "SampleID": "FexOy-0001-BFR",
+  "Creator": "Dr. Jane Doe",
+  "ORCID": "0000-0001-2345-6789",
+  "Date": "2024-11-28",
+  "Time": "11:01:01",
+  "Project": "FexOy Raman Study",
+  "RamanLaserWavelength": 532,
+  "RamanLaserPower": 10,
+  "Accumulations": 3,
+  "IntegrationTime": 1,
+  "SchemaID": "raman_experiment"
+}

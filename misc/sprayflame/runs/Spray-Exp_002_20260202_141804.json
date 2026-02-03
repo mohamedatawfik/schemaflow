@@ -1,0 +1,18 @@
+{
+  "FileTypeIdentifier": "This is a EMPI-RF metadata File. Do not change this for crawler identification",
+  "Identifier": "Spray-Exp_002",
+  "SampleID": "FexOy-0001-BFR",
+  "Creator": "Max Mustermann",
+  "ORCID": "5558-8885-5589-8569",
+  "Date": "2026-02-02",
+  "Time": "14:18:04",
+  "ReactorType": "Spray Flame Reactor 5",
+  "PrecursorSolution": "FeNO3",
+  "PrecursorConcentration": 5,
+  "SprayFlowRate": 2,
+  "CarrierGas": "air",
+  "CarrierGasFlowRate": 2,
+  "FlameTemperature": 1450,
+  "CombustionEquivalenceRatio": 0.8,
+  "SchemaID": "nanoparticle_synthesis_conditions"
+}
