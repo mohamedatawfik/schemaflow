@@ -1,5 +1,7 @@
 # SchemaFlow
 
+![SchemaFlow logo](misc/SchemaFlow.jpg)
+
 SchemaFlow is a JSON-Schema-based workflow for FAIR metadata in a Nextcloud + MariaDB environment.
 It lets you define metadata requirements as JSON Schema, collect validated metadata as JSON files, store them in Nextcloud,
 store those metadata JSON files together with the measurement data they describe, and ingest the metadata into MariaDB via WebDAV
