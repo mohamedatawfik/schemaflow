@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import TextField from "@mui/material/TextField"
-import { Button } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import Dialog from '@mui/material/Dialog';
@@ -10,6 +10,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import Alert from '@mui/material/Alert';
 import { FormContext } from '../FormContext';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -46,7 +47,7 @@ const changeKeywords = (convertedSchema, oldKey, desiredNewKey) => {
     }
 }
 
-const EditSchemaHeader = ({ title, description, schemaID, openDialog, setOpenDialog }) => {
+const EditSchemaHeader = ({ title, description, schemaID, openDialog, setOpenDialog, schemaIDWarning, setSchemaIDWarning }) => {
 
     const latestSchemaDraft = "http://json-schema.org/draft-07/schema#";
     const [_schemaVersion, _setSchemaVersion] = useState(latestSchemaDraft);
@@ -193,6 +194,7 @@ const EditSchemaHeader = ({ title, description, schemaID, openDialog, setOpenDia
 
 
         updateParent(emptyObject)
+        setSchemaIDWarning?.(false)
         setOpenDialog(false)
     }
 
@@ -226,6 +228,7 @@ const EditSchemaHeader = ({ title, description, schemaID, openDialog, setOpenDia
         _setSchemaVersion(latestSchemaDraft);
         _setSchemaID(schemaID);
         _setTitle(title);
+        setSchemaIDWarning?.(false)
         setOpenDialog(false)
     }
 
@@ -250,6 +253,26 @@ const EditSchemaHeader = ({ title, description, schemaID, openDialog, setOpenDia
                     <div>
                         <FormControl component="widget-type">
                             <FormLabel style={{ color: "#01579b" }} component="legend">Basic Descriptors:</FormLabel>
+                            {schemaIDWarning && (
+                                <Box sx={{ position: 'relative', mb: 2 }}>
+                                    <Alert severity="warning">
+                                        You must enter a valid Schema ID to Compile.
+                                    </Alert>
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            bottom: -8,
+                                            left: 24,
+                                            width: 0,
+                                            height: 0,
+                                            borderLeft: '8px solid transparent',
+                                            borderRight: '8px solid transparent',
+                                            borderTop: '8px solid',
+                                            borderTopColor: '#ed6c02',
+                                        }}
+                                    />
+                                </Box>
+                            )}
                             <TextField margin='normal' onChange={event => handleChangeUISchema(event, "id")} style={{ marginTop: "10px" }} defaultValue={schemaID} variant="outlined" fullWidth={true} label={"Schema ID"} helperText={errorMessage || 'ID for this schema if available.'} error={!!errorMessage} />
                             <TextField margin='normal' onChange={event => handleChangeUISchema(event, "title")} style={{ marginTop: "10px" }} defaultValue={title} variant="outlined" fullWidth={true} label={"Schema Title"} helperText={"Title of the schema."} />
                             <TextField margin='normal' onChange={event => handleChangeUISchema(event, "description")} style={{ marginTop: "10px" }} defaultValue={description} variant="outlined" fullWidth={true} label={"Schema Description"} multiline rows={3} helperText="Description of the schema. Be more descriptive won't hurt." />

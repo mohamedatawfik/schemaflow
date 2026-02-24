@@ -43,9 +43,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FormRenderer = ({ setSchemaSpecification, revertAllChanges, schema, edit, originalSchema }) => {
-    const { updateParent, convertedSchema } = useContext(FormContext);
+    const { updateParent, convertedSchema, openSchemaHeaderDialog, setOpenSchemaHeaderDialog, schemaIDWarning, setSchemaIDWarning } = useContext(FormContext);
     const [openDialogAddElement, setOpenDialogAddElement] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
     const [openSchemaViewer, setOpenSchemaViewer] = useState(false);
     const [receivedData, setReceivedData] = useState()
 
@@ -144,7 +143,7 @@ const FormRenderer = ({ setSchemaSpecification, revertAllChanges, schema, edit, 
                 </Tooltip>
                 {edit ? <>
                     <Tooltip placement="top" title="Edit json schema header">
-                        <Button onClick={() => setOpenDialog(true)} style={{ marginLeft: "5px" }}>
+                        <Button onClick={() => { setSchemaIDWarning(false); setOpenSchemaHeaderDialog(true); }} style={{ marginLeft: "5px" }}>
                             <EditIcon color="primary" />
                         </Button>
                     </Tooltip>
@@ -191,7 +190,7 @@ const FormRenderer = ({ setSchemaSpecification, revertAllChanges, schema, edit, 
             </DragDropContext>
         </div>
         {openDialogAddElement ? <EditElement editOrAdd={"add"} openDialog={openDialogAddElement} setOpenDialog={setOpenDialogAddElement} defaultSchema={defaultSchema} schemaTitle={title} field_label={"this schema"} /> : null}
-        {openDialog ? <EditSchemaHeader schemaID={id !== undefined ? id : $id} title={title} description={description} openDialog={openDialog} setOpenDialog={setOpenDialog} /> : null}
+        {openSchemaHeaderDialog ? <EditSchemaHeader schemaID={id !== undefined ? id : $id} title={title} description={description} openDialog={openSchemaHeaderDialog} setOpenDialog={setOpenSchemaHeaderDialog} schemaIDWarning={schemaIDWarning} setSchemaIDWarning={setSchemaIDWarning} /> : null}
         {openSchemaViewer ? <JSONSchemaViewerDialog
             openSchemaViewer={openSchemaViewer}
             setOpenSchemaViewer={setOpenSchemaViewer}

@@ -107,6 +107,8 @@ const AdamantMain = ({ onLogout }) => {
   const [jobRequestSchemas, setJobRequestSchemas] = useState([]);
   const [submitTextList, setSubmitTextList] = useState([]);
   const [setSubmitText] = useState("Submit Job Request");
+  const [openSchemaHeaderDialog, setOpenSchemaHeaderDialog] = useState(false);
+  const [schemaIDWarning, setSchemaIDWarning] = useState(false);
   const [browseExpirementsMode, setBrowseExpirementsMode] = useState(() => {
     try {
       return sessionStorage.getItem("adamant_browse_db_ui") === "1";
@@ -288,13 +290,11 @@ const AdamantMain = ({ onLogout }) => {
     // Log the extracted SchemaID
     console.log('Extracted SchemaID:', schemaID);
 
-    // Check if SchemaID is present
+    // If SchemaID is missing, open the Edit schema modal with warning
     if (!schemaID) {
-      console.error('SchemaID is missing or empty.');
-      toast.error('Schema ID cannot be empty. Please provide a valid Schema ID.', {
-        toastId: 'schemaIDError',
-      });
-      return; // Exit the function if SchemaID is empty
+      setSchemaIDWarning(true);
+      setOpenSchemaHeaderDialog(true);
+      return;
     }
 
     // Proceed with saving the schema if SchemaID is valid
@@ -668,6 +668,14 @@ const AdamantMain = ({ onLogout }) => {
 
     console.log("Before compilation: browseSchemaMode =", browseSchemaMode);
     console.log("Before compilation: createSchratchMode =", createScratchMode);
+
+    // Don't compile if Schema ID is not set; open the Edit schema modal with warning
+    const schemaIDForCompile = value?.$id ?? value?.id;
+    if (!schemaIDForCompile || (typeof schemaIDForCompile === 'string' && schemaIDForCompile.trim() === '')) {
+      setSchemaIDWarning(true);
+      setOpenSchemaHeaderDialog(true);
+      return;
+    }
 
     const [valid, message] = validateSchemaAgainstSpecification(
       JSON.parse(JSON.stringify(schema)),
@@ -1050,6 +1058,10 @@ const AdamantMain = ({ onLogout }) => {
         implementedFieldTypes,
         handleCheckIDexistence,
         createScratchMode,
+        openSchemaHeaderDialog,
+        setOpenSchemaHeaderDialog,
+        schemaIDWarning,
+        setSchemaIDWarning,
       }}
     >
       <div
@@ -1168,7 +1180,7 @@ const AdamantMain = ({ onLogout }) => {
               </Button>
               <div
                 style={{
-                  paddingLeft: "10px",
+                  paddingLeft: "6px",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
