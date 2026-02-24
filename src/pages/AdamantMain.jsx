@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import $ from "jquery";
 //import { makeStyles } from "@mui/styles";
 import { useDropzone } from "react-dropzone";
-//import QPTDATLogo from "../assets/header-image.png";
+//import SchemaFlowLogo from "../assets/header-image.png";
 import FormRenderer from "../components/FormRenderer";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
@@ -27,9 +27,7 @@ import SchemaFour from "../schemas/example-request-schema.json";
 import SchemaFive from "../schemas/plasma-mds.json";
 import convData2FormData from "../components/utils/convData2FormData";
 import changeKeywords from "../components/utils/changeKeywords";
-//import QPTDATLogo from "../assets/adamant-header-5.svg";
-import QPTDATLogo from "../assets/adamant-header-5.svg";
-import EMPIRFLogo from "../assets/EMPI_Logo_reactive-fluids_Color_Black.png"
+import SchemaFlowLogo from "../assets/schemaflow-logo.jpg";
 import validateSchemaAgainstSpecification from "../components/utils/validateSchemaAgainstSpecification";
 import { Autocomplete } from "@mui/material";
 import checkIDexistence from "../components/utils/checkIDexistence";
@@ -105,8 +103,7 @@ const AdamantMain = ({ onLogout }) => {
   const [schemaSpecification, setSchemaSpecification] = useState("");
   const [onlineMode, setOnlineMode] = useState(false);
   const [SEMSelectedDevice, setSEMSelectedDevice] = useState("");
-  const [HeaderImage, setHeaderImage] = useState(QPTDATLogo);
-  const [EMPIRFHeaderImage, setEMPIRFHeaderImage] = useState(EMPIRFLogo);
+  const [HeaderImage, setHeaderImage] = useState(SchemaFlowLogo);
   const [jobRequestSchemas, setJobRequestSchemas] = useState([]);
   const [submitTextList, setSubmitTextList] = useState([]);
   const [setSubmitText] = useState("Submit Job Request");
@@ -394,21 +391,18 @@ const AdamantMain = ({ onLogout }) => {
         try {
           //let SEMlogo = require("../assets/sem-header-picture.png");
           //setHeaderImage(SEMlogo["default"]);
-          setHeaderImage(QPTDATLogo);
-          setEMPIRFHeaderImage(EMPIRFHeaderImage);
+          setHeaderImage(SchemaFlowLogo);
           setEditMode(false);
           setSubmitText(
             submitTextList[jobRequestSchemas.indexOf(convertedSchema["title"])]
           );
         } catch (error) {
           console.log(error);
-          setHeaderImage(QPTDATLogo);
-          setEMPIRFHeaderImage(EMPIRFHeaderImage);
+          setHeaderImage(SchemaFlowLogo);
           setEditMode(true);
         }
       } else {
-        setHeaderImage(QPTDATLogo);
-        setEMPIRFHeaderImage(EMPIRFHeaderImage);
+        setHeaderImage(SchemaFlowLogo);
         setEditMode(true);
       }
 
@@ -454,8 +448,7 @@ const AdamantMain = ({ onLogout }) => {
             try {
               //let SEMlogo = require("../assets/sem-header-picture.png");
               //setHeaderImage(SEMlogo["default"]);
-              setHeaderImage(QPTDATLogo);
-              setEMPIRFHeaderImage(EMPIRFHeaderImage);
+              setHeaderImage(SchemaFlowLogo);
               setEditMode(false);
               setSubmitText(
                 submitTextList[
@@ -464,13 +457,11 @@ const AdamantMain = ({ onLogout }) => {
               );
             } catch (error) {
               console.log(error);
-              setHeaderImage(QPTDATLogo);
-              setEMPIRFHeaderImage(EMPIRFHeaderImage);
+              setHeaderImage(SchemaFlowLogo);
               setEditMode(true);
             }
           } else {
-            setHeaderImage(QPTDATLogo);
-            setEMPIRFHeaderImage(EMPIRFHeaderImage);
+            setHeaderImage(SchemaFlowLogo);
             setEditMode(true);
           }
 
@@ -528,8 +519,7 @@ const AdamantMain = ({ onLogout }) => {
 
   // clear schema on-click handle
   const clearSchemaOnClick = () => {
-    setHeaderImage(QPTDATLogo);
-    setEMPIRFHeaderImage(EMPIRFHeaderImage);
+    setHeaderImage(SchemaFlowLogo);
     setDisable(true);
     setRenderReady(false);
     setSchema(null);
@@ -637,21 +627,18 @@ const AdamantMain = ({ onLogout }) => {
       try {
         //let SEMlogo = require("../assets/sem-header-picture.png");
         //setHeaderImage(SEMlogo["default"]);
-        setHeaderImage(QPTDATLogo);
-        setEMPIRFHeaderImage(EMPIRFHeaderImage);
+        setHeaderImage(SchemaFlowLogo);
         setEditMode(false);
         setSubmitText(
           submitTextList[jobRequestSchemas.findIndex(convertedSchema["title"])]
         );
       } catch (error) {
         console.log(error);
-        setHeaderImage(QPTDATLogo);
-        setEMPIRFHeaderImage(EMPIRFHeaderImage);
+        setHeaderImage(SchemaFlowLogo);
         setEditMode(true);
       }
     } else {
-      setHeaderImage(QPTDATLogo);
-      setEMPIRFHeaderImage(EMPIRFHeaderImage);
+      setHeaderImage(SchemaFlowLogo);
       setEditMode(true);
     }
 
@@ -1076,7 +1063,9 @@ const AdamantMain = ({ onLogout }) => {
       >
         <div
           style={{
-            paddingBottom: "5px",
+            paddingTop: "16px",
+            paddingBottom: "28px",
+            paddingLeft: "16px",
             flex: browseExpirementsMode ? "0 0 auto" : undefined,
           }}
         >
@@ -1088,14 +1077,9 @@ const AdamantMain = ({ onLogout }) => {
             }}
           >
             <img
-              style={{ height: "100px", borderRadius: "2px", marginRight: "40px"}}
-              alt="header"
-              src={HeaderImage !== undefined ? HeaderImage : QPTDATLogo}
-            />
-            <img
-              style={{ height: "70px", borderRadius: "5px", marginRight: "16px" }}
-              alt="empi-rf"
-              src={EMPIRFHeaderImage !== undefined ? EMPIRFHeaderImage : EMPIRFLogo}
+              style={{ height: "100px", borderRadius: "2px", marginRight: "16px" }}
+              alt="SchemaFlow"
+              src={HeaderImage !== undefined ? HeaderImage : SchemaFlowLogo}
             />
             <div
               style={{
@@ -1109,7 +1093,7 @@ const AdamantMain = ({ onLogout }) => {
                 border: "1px solid #000000",
               }}
             >
-              ADAMANT v3.0
+              SchemaFlow
             </div>
           </div>
           {!inputMode ? (

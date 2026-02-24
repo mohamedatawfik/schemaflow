@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Purpose
-- Adamant is a JSON-Schema-based metadata editor and data intake tool for research workflows (FAIR-style metadata).
+- SchemaFlow is a JSON-Schema-based metadata editor and data intake tool for research workflows (FAIR-style metadata).
 - The UI renders interactive forms from JSON Schema, validates input, and produces JSON datasets that can be ingested into MariaDB.
 
 ## High-level architecture

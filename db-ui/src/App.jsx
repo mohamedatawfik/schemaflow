@@ -35,10 +35,10 @@ const App = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       {/* Titelleiste */}
-      <AppBar position="static" sx={{ backgroundColor: '#3f51b5' }}>
+      <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Adamant SQL Database
+            Schemaflow SQL Database
           </Typography>
           {/* Seitenauswahl */}
           <Select
